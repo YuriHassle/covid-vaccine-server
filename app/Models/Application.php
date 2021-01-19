@@ -14,7 +14,7 @@ class Application extends Model
         'location_id',
         'lot_id',
         'category_id',
-        'servicegroups_id',
+        'servicegroup_id',
         'citizen_id',
         'vaccinator_id',
         'application_date',

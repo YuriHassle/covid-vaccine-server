@@ -6,6 +6,8 @@ use App\Models\Application;
 use App\Models\Citizen;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
+use Carbon;
+
 
 class ApplicationController extends BaseController
 {
@@ -19,9 +21,10 @@ class ApplicationController extends BaseController
     {
         $citizen = $request->only(['citizen']);
         $application = $request->except(['citizen']);
-        
+
         $citizen = Citizen::create($citizen['citizen']);
         $application['citizen_id'] = $citizen->id;
+        $application['record_date'] = Carbon\Carbon::now();
         $application = Application::create($application);
 
         return $this->sendResponse($application, 'Dados salvos com sucesso.', 201); 
