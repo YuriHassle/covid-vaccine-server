@@ -19,12 +19,8 @@ class Citizen extends Model
     {
         return $this->hasMany(Application::class);
     }
-    public function vaccinators()
-    {
-        return $this->hasMany(Vaccinator::class);
-    }
     public function vaccinator()
     {
-        return $this->hasOne(Citizen::class);
+        return $this->hasOne(Vaccinator::class, 'id', 'id');
     }
 }

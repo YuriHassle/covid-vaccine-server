@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vaccinator;
+use App\Models\Citizen;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
 
-class VaccinatorController extends Controller
+class VaccinatorController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,8 @@ class VaccinatorController extends Controller
      */
     public function index()
     {
-        //
+        $vaccinators = Citizen::has('vaccinator')->get();
+        return $this->sendResponse($vaccinators->toArray(), 'Vacinadores recuperados com sucesso.');
     }
 
     /**
