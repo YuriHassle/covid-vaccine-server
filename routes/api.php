@@ -4,6 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VaccinatorController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ServicegroupController;
+use App\Http\Controllers\LotController;
 
 
 /*
@@ -24,5 +28,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('api')->group(function () {
 
     Route::resource('vaccinators', VaccinatorController::class, ['only' => ['index']]);
+    Route::resource('locations', LocationController::class, ['only' => ['index']]);
+    Route::resource('lots', LotController::class, ['only' => ['index']]);
+    Route::resource('categories', CategoryController::class, ['only' => ['index']]);
+    Route::resource('servicegroups', ServicegroupController::class, ['only' => ['index']]);
     Route::resource('applications', ApplicationController::class, ['only' => ['store']]);
 });

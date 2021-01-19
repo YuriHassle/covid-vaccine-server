@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Location;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
 
-class LocationController extends Controller
+class LocationController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class LocationController extends Controller
      */
     public function index()
     {
-        //
+        $locations = Location::all();
+        return $this->sendResponse($locations, 'Localidades recuperadas com sucesso.');
     }
 
     /**

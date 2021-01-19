@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Lot;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
 
-class LotController extends Controller
+class LotController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class LotController extends Controller
      */
     public function index()
     {
-        //
+        $lots = Lot::all();
+        return $this->sendResponse($lots, 'Lotes recuperadas com sucesso.');
     }
 
     /**

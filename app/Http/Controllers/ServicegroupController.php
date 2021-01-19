@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Servicegroup;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
 
-class ServicegroupController extends Controller
+class ServicegroupController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class ServicegroupController extends Controller
      */
     public function index()
     {
-        //
+        $servicegroups = Servicegroup::all();
+        return $this->sendResponse($servicegroups, 'Grupos de atendimento recuperados com sucesso.');
     }
 
     /**
