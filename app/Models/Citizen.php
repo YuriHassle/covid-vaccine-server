@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Citizen extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $fillable = [
         'cpf',
         'cns',

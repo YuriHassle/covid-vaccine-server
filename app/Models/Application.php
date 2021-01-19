@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Application extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+
     protected $fillable = [
         'location_id',
         'lot_id',
@@ -16,6 +18,7 @@ class Application extends Model
         'citizen_id',
         'vaccinator_id',
         'application_date',
+        'record_date',
         'dose',
         'latitude',
         'longitude',

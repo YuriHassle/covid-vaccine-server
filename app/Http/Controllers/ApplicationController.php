@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Citizen;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 
@@ -18,8 +19,8 @@ class ApplicationController extends BaseController
     {
         $citizen = $request->only(['citizen']);
         $application = $request->except(['citizen']);
-
-        $citizen = Citizen::create($citizen);
+        
+        $citizen = Citizen::create($citizen['citizen']);
         $application['citizen_id'] = $citizen->id;
         $application = Application::create($application);
 

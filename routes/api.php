@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VaccinatorController;
+use App\Http\Controllers\ApplicationController;
 
 
 /*
@@ -23,5 +24,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('api')->group(function () {
 
     Route::resource('vaccinators', VaccinatorController::class);
-    Route::resource('applications', 'ApplicationController');
+    Route::resource('applications', ApplicationController::class);
 });
