@@ -23,6 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware('api')->group(function () {
 
-    Route::resource('vaccinators', VaccinatorController::class);
-    Route::resource('applications', ApplicationController::class);
+    Route::resource('vaccinators', VaccinatorController::class, ['only' => ['index']]);
+    Route::resource('applications', ApplicationController::class, ['only' => ['store']]);
 });
