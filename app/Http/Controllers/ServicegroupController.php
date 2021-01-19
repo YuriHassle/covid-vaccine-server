@@ -13,9 +13,16 @@ class ServicegroupController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $servicegroups = Servicegroup::all();
+        $servicegroups = Servicegroup::query();
+        
+        if($request->filled('category_id')){
+            $servicegroups->where('category_id', $request->category_id);
+        }
+
+        $servicegroups = $servicegroups->get();
+
         return $this->sendResponse($servicegroups, 'Grupos de atendimento recuperados com sucesso.');
     }
 
