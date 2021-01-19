@@ -5,26 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Citizen extends Model
+class Category extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'cpf',
-        'cns',
         'name',
-        'birthday',
     ];
 
     public function applications()
     {
         return $this->hasMany(Application::class);
     }
-    public function vaccinators()
+    public function servicegroups()
     {
-        return $this->hasMany(Vaccinator::class);
-    }
-    public function vaccinator()
-    {
-        return $this->hasOne(Citizen::class);
+        return $this->hasMany(Servicegroup::class);
     }
 }
