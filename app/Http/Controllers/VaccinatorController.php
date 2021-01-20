@@ -16,7 +16,7 @@ class VaccinatorController extends BaseController
      */
     public function index()
     {
-        $vaccinators = Citizen::has('vaccinator')->get();
+        $vaccinators = Citizen::has('vaccinator')->orderBy('name')->get();
         return $this->sendResponse($vaccinators, 'Vacinadores recuperados com sucesso.');
     }
 

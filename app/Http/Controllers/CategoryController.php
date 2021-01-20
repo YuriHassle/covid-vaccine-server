@@ -15,7 +15,7 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('name')->get();
         return $this->sendResponse($categories, 'Grupos de prioridade recuperadas com sucesso.');
     }
 

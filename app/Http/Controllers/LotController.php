@@ -15,7 +15,7 @@ class LotController extends BaseController
      */
     public function index()
     {
-        $lots = Lot::all();
+        $lots = Lot::orderBy('name')->get();
         return $this->sendResponse($lots, 'Lotes recuperadas com sucesso.');
     }
 

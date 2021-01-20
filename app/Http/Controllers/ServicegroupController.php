@@ -21,7 +21,7 @@ class ServicegroupController extends BaseController
             $servicegroups->where('category_id', $request->category_id);
         }
 
-        $servicegroups = $servicegroups->get();
+        $servicegroups = $servicegroups->orderBy('name')->get();
 
         return $this->sendResponse($servicegroups, 'Grupos de atendimento recuperados com sucesso.');
     }
