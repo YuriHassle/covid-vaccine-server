@@ -8,6 +8,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServicegroupController;
 use App\Http\Controllers\LotController;
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -25,8 +26,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('api')->group(function () {
+Route::post('/login', [AuthController::class, 'login']);
 
+Route::middleware('auth:api')->group(function () {
     Route::resource('vaccinators', VaccinatorController::class, ['only' => ['index']]);
     Route::resource('locations', LocationController::class, ['only' => ['index']]);
     Route::resource('lots', LotController::class, ['only' => ['index']]);
