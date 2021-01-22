@@ -12,9 +12,19 @@ use Carbon;
 class ApplicationController extends BaseController
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $applications = Application::query();
+        
+        if($request->filled('cpf')){
+            $applications->whereHas('citizen', function($query) use ($request){
+                $query->where('cpf', 'like', $request->cpf);
+            });
+        }
+
+        $applications = $applications->orderBy('application_date')->get();
+
+        return $this->sendResponse($applications, 'Cidadãos recuperados com sucesso.');
     }
 
     public function store(Request $request)
