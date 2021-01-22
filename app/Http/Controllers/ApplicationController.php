@@ -29,10 +29,16 @@ class ApplicationController extends BaseController
 
     public function store(Request $request)
     {
-        $citizen = $request->only(['citizen']);
+        $citizen = $request->only(['citizen'])['citizen'];
         $application = $request->except(['citizen']);
 
-        $citizen = Citizen::create($citizen['citizen']);
+        $findCitizen = Citizen::where('cpf', $citizen['cpf'])->doesnthave('applications')->first();
+        if($findCitizen){
+            $citizen = $findCitizen;
+        } else {
+            $citizen = Citizen::create($citizen);
+        }
+
         $application['citizen_id'] = $citizen->id;
         $application['record_date'] = Carbon\Carbon::now();
         $application = Application::create($application);
