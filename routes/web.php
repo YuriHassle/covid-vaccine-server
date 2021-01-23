@@ -15,6 +15,10 @@ use App\Http\Controllers\LoginController;
 */
 
 Route::get('/', function () {
-    //return view('welcome');
     return File::get(public_path() . '/index.html');
 });
+Route::get('/dashboard', function () {
+    //return view('welcome');
+    return File::get(public_path() . '/vacinometro/view/index.php');
+});
+
