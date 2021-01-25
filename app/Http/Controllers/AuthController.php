@@ -37,10 +37,11 @@ class AuthController extends BaseController
         $loginData['status'] = 1;
 
         if (!auth()->attempt($loginData)) {
-            return $this->sendResponse([], 'Credenciais inválidas');
+            return $this->sendResponse(['successful_login' => false,], 'Credenciais inválidas');
         }
 
         $responseData = [
+            'successful_login' => true,
             'user' =>  auth()->user(),
             'access_token' => auth()->user()->createToken('authToken')->accessToken,
         ];
