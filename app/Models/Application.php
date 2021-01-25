@@ -11,6 +11,7 @@ class Application extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'user_id',
         'location_id',
         'lot_id',
         'category_id',
@@ -23,7 +24,9 @@ class Application extends Model
         'latitude',
         'longitude',
     ];
-
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
     public function location(){
         return $this->belongsTo(Location::class);
     }
