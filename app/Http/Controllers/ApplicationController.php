@@ -30,7 +30,7 @@ class ApplicationController extends BaseController
     public function store(Request $request)
     {
         $citizen = $request->only(['citizen'])['citizen'];
-        $application = $request->except(['citizen']);
+        $application = $request->except(['citizen', 'updated_by']);
 
         $findCitizen = Citizen::where('cpf', $citizen['cpf'])->doesnthave('applications')->first();
         if($findCitizen){
@@ -40,7 +40,6 @@ class ApplicationController extends BaseController
         }
 
         $application['citizen_id'] = $citizen->id;
-        $application['record_date'] = Carbon\Carbon::now();
         $application = Application::create($application);
 
         return $this->sendResponse($application, 'Dados salvos com sucesso.', 201); 
@@ -53,7 +52,16 @@ class ApplicationController extends BaseController
 
     public function update(Request $request, Application $application)
     {
-        //
+        $newCitizen = $request->only(['citizen'])['citizen'];
+        $newApplication = $request->except(['citizen', 'user_id']); 
+        $citizen = Citizen::find($application->citizen_id);
+        if($citizen->cpf != $newCitizen['cpf']){
+            return $this->sendError('Não é possível alterar o CPF');
+        }
+        //TODO: use validate to require updated_ by field
+        $citizen->update($newCitizen);
+        $application->update($newApplication);
+        return $this->sendResponse($application, 'Aplicação de vacina alterada com sucesso.');
     }
 
     public function destroy(Application $application)

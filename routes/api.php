@@ -36,5 +36,5 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('lots', LotController::class, ['only' => ['index']]);
     Route::resource('categories', CategoryController::class, ['only' => ['index']]);
     Route::resource('servicegroups', ServicegroupController::class, ['only' => ['index']]);
-    Route::resource('applications', ApplicationController::class, ['only' => ['store', 'index']]);
+    Route::resource('applications', ApplicationController::class, ['only' => ['store', 'index', 'update']]);
 });
