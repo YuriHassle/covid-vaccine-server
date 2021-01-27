@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Application extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+    //use DateTimeInterface;
+
+    const CREATED_AT = 'record_date';
 
     protected $fillable = [
+        'user_id',
         'location_id',
         'lot_id',
         'category_id',
@@ -18,12 +21,15 @@ class Application extends Model
         'citizen_id',
         'vaccinator_id',
         'application_date',
-        'record_date',
         'dose',
         'latitude',
         'longitude',
+        'updated_by',
     ];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
     public function location(){
         return $this->belongsTo(Location::class);
     }
@@ -41,5 +47,11 @@ class Application extends Model
     }
     public function vaccinator(){
         return $this->belongsTo(Vaccinator::class);
+    }
+
+    //this method overrides the default serializeDate to use custom format and timezone 
+    protected function serializeDate($date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

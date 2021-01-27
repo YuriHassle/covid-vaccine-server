@@ -55,7 +55,8 @@ class CitizenController extends BaseController
      */
     public function show(Citizen $citizen)
     {
-        //
+        $citizen = Citizen::find($citizen->id);
+        return $this->sendResponse($citizen, 'Cidadão recuperado com sucesso.');
     }
 
     /**

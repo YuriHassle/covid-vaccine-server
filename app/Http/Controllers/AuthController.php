@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
 
-class AuthController extends Controller
+
+class AuthController extends BaseController
 {
     public function register(Request $request)
     {
@@ -28,17 +30,22 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $loginData = $request->validate([
-            'email' => 'email|required',
+            'cpf' => 'required',
             'password' => 'required'
         ]);
 
+        $loginData['status'] = 1;
+
         if (!auth()->attempt($loginData)) {
-            return response(['message' => 'Invalid Credentials']);
+            return $this->sendResponse(['successful_login' => false,], 'Credenciais inválidas');
         }
 
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
-
-        return response(['user' => auth()->user(), 'access_token' => $accessToken]);
-
+        $responseData = [
+            'successful_login' => true,
+            'user' =>  auth()->user(),
+            'access_token' => auth()->user()->createToken('authToken')->accessToken,
+        ];
+        
+        return $this->sendResponse($responseData, 'Login realizado com sucesso');
     }
 }
