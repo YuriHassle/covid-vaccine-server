@@ -22,9 +22,9 @@ class ApplicationController extends BaseController
             });
         }
 
-        $applications = $applications->orderBy('application_date')->get();
+        $applications = $applications->orderBy('application_date')->with('citizen')->get();
 
-        return $this->sendResponse($applications, 'Cidadãos recuperados com sucesso.');
+        return $this->sendResponse($applications, 'Aplicações de vacina recuperadas com sucesso.');
     }
 
     public function store(Request $request)
@@ -42,7 +42,7 @@ class ApplicationController extends BaseController
         $application['citizen_id'] = $citizen->id;
         $application = Application::create($application);
 
-        return $this->sendResponse($application, 'Dados salvos com sucesso.', 201); 
+        return $this->sendResponse($application, 'Aplicação de vacina salva com sucesso.', 201); 
     }
 
     public function show(Application $application)
