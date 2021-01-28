@@ -1,6 +1,8 @@
 # Covid-vaccine-server
 
-Projeto para back-end do sistema para gerenciamento de registros de imunizaçao contra a COVID-19. Link para o sistema http://imunizamanaus-hom.manaus.am.gov.br.
+Projeto para back-end do sistema para gerenciamento de registros de imunizaçao contra a COVID-19. Link para o sistema:
+- ambiente de homologação: http://imunizacovid19-api-hom.manaus.am.gov.br.
+- ambiente de produção: http://imunizacovid19-api.manaus.am.gov.br.
 
 ## Sobre o Sistema
 
@@ -11,7 +13,7 @@ O sistema contempla [...].
 ## Implementação
 
 Para a implementação foi utilizado o framework Laravel (https://laravel.com/).
-As demais dependências encontram-se no arquivo de configuração package.json.
+As demais dependências encontram-se no arquivo de configuração composer.json.
 
 ## Pré-Requisitos para deployment
 
