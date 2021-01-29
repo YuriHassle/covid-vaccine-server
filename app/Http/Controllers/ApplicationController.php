@@ -15,7 +15,7 @@ class ApplicationController extends BaseController
     public function index(Request $request)
     {
         $applications = Application::query();
-        
+
         if($request->filled('cpf')){
             $applications->whereHas('citizen', function($query) use ($request){
                 $query->where('cpf', 'like', $request->cpf);
@@ -42,7 +42,7 @@ class ApplicationController extends BaseController
         $application['citizen_id'] = $citizen->id;
         $application = Application::create($application);
 
-        return $this->sendResponse($application, 'Aplicação de vacina salva com sucesso.', 201); 
+        return $this->sendResponse($application, 'Aplicação de vacina salva com sucesso.', 201);
     }
 
     public function show(Application $application)
@@ -53,7 +53,7 @@ class ApplicationController extends BaseController
     public function update(Request $request, Application $application)
     {
         $newCitizen = $request->only(['citizen'])['citizen'];
-        $newApplication = $request->except(['citizen', 'user_id']); 
+        $newApplication = $request->except(['citizen', 'user_id']);
         $citizen = Citizen::find($application->citizen_id);
         if($citizen->cpf != $newCitizen['cpf']){
             return $this->sendError('Não é possível alterar o CPF');

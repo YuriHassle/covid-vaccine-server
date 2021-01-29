@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Immunobiological;
 use Illuminate\Http\Request;
 
-class ImmunobiologicalController extends Controller
+class ImmunobiologicalController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class ImmunobiologicalController extends Controller
      */
     public function index()
     {
-        //
+        $imbs = Immunobiological::orderBy('name')->get();
+        return $this->sendResponse($imbs, 'Imunobiologicos recuperados com sucesso.');
     }
 
     /**
