@@ -15,7 +15,7 @@ class ImmunobiologicalController extends BaseController
     public function index()
     {
         $imbs = Immunobiological::orderBy('name')->get();
-        return $this->sendResponse($imbs, 'Imunobiologicos recuperados com sucesso.');
+        return $this->sendResponse($imbs, 'Imunobiológicos recuperados com sucesso.');
     }
 
     /**
