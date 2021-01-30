@@ -34,7 +34,7 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('vaccinators', VaccinatorController::class, ['only' => ['index']]);
     Route::resource('citizens', CitizenController::class, ['only' => ['index']]);
     Route::resource('locations', LocationController::class, ['only' => ['index']]);
-    Route::resource('immunos', ImmunobiologicalController::class, ['only' => ['index']]);
+    //Route::resource('immunobiologicals', ImmunobiologicalController::class, ['only' => ['index']]);
     Route::resource('lots', LotController::class, ['only' => ['index']]);
     Route::resource('categories', CategoryController::class, ['only' => ['index']]);
     Route::resource('servicegroups', ServicegroupController::class, ['only' => ['index']]);
