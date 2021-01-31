@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends BaseController
@@ -54,35 +53,17 @@ class AuthController extends BaseController
     public function updatePassword(Request $request)
     {
         $this->user = User::find(auth()->user()->id);
-        $data = ['errors'=> []];
 
-        $rules = [
-            'password' => ['required', function ($attribute, $value, $fail) {
-                if (!Hash::check($value, $this->user->password)) {
-                    $fail('A senha está incorreta.');
-                }
-            }],
-            'new_password' => 'required|different:password|same:new_confirm_password',
-            'new_confirm_password' => 'required'
-        ];
+        $errors = ['errors'=>[]];
 
-        $attributes = [
-            'new_password' => 'Nova senha',
-            'new_confirm_password' => 'Confirmar Nova Senha',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $attributes, $attributes);
-
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $message) {
-                array_push($data['errors'], $message);
-            }
-            return $this->sendResponse($data, 'Dados inválidos');
+        if (!$this->user->validateUpdatePass($request->all())) {
+            $errors['errors'] = $this->user->errors;
+            return $this->sendResponse($errors, 'Dados inválidos');
         }
 
         $this->user->update(['password'=> Hash::make($request->new_password)]);
 
-        return $this->sendResponse($data, 'Senha atualizada com sucesso');
+        return $this->sendResponse($errors, 'Senha atualizada com sucesso');
 
     }
 }
