@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends BaseController
 {
+    private $user;
+
     public function register(Request $request)
     {
         $validatedData = $request->validate([
@@ -45,7 +47,35 @@ class AuthController extends BaseController
             'user' =>  auth()->user(),
             'access_token' => auth()->user()->createToken('authToken')->accessToken,
         ];
-        
+
         return $this->sendResponse($responseData, 'Login realizado com sucesso');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $this->user = User::find(auth()->user()->id);
+        $errors = [];
+
+        $validator = Validator::make($request->all(), [
+            'password' => ['required', function ($attribute, $value, $fail) {
+                if (!Hash::check($value, $this->user->password)) {
+                    $fail('The '.$attribute.' is invalid.');
+                }
+            },],
+            'new_password' => 'required|different:password',
+            'new_confirm_password' => 'required|same:new_password'
+        ]);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $message) {
+                array_push($errors, $message);
+            }
+            return $this->sendResponse(['errors'=> $errors], 'Dados inválidos');
+        }
+
+        $this->user->update(['password'=> Hash::make($request->new_password)]);
+
+        return $this->sendResponse(true, 'Senha atualizada com sucesso');
+
     }
 }
