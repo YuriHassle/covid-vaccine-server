@@ -56,15 +56,22 @@ class AuthController extends BaseController
         $this->user = User::find(auth()->user()->id);
         $data = ['errors'=> []];
 
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'password' => ['required', function ($attribute, $value, $fail) {
                 if (!Hash::check($value, $this->user->password)) {
-                    $fail('The '.$attribute.' is invalid.');
+                    $fail('A senha está incorreta.');
                 }
-            },],
-            'new_password' => 'required|different:password',
-            'new_confirm_password' => 'required|same:new_password'
-        ]);
+            }],
+            'new_password' => 'required|different:password|same:new_confirm_password',
+            'new_confirm_password' => 'required'
+        ];
+
+        $attributes = [
+            'new_password' => 'Nova senha',
+            'new_confirm_password' => 'Confirmar Nova Senha',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $attributes, $attributes);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $message) {
