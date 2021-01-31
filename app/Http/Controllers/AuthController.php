@@ -54,7 +54,7 @@ class AuthController extends BaseController
     public function updatePassword(Request $request)
     {
         $this->user = User::find(auth()->user()->id);
-        $errors = [];
+        $data = ['errors'=> []];
 
         $validator = Validator::make($request->all(), [
             'password' => ['required', function ($attribute, $value, $fail) {
@@ -68,14 +68,14 @@ class AuthController extends BaseController
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $message) {
-                array_push($errors, $message);
+                array_push($data['errors'], $message);
             }
-            return $this->sendResponse(['errors'=> $errors], 'Dados inválidos');
+            return $this->sendResponse($data, 'Dados inválidos');
         }
 
         $this->user->update(['password'=> Hash::make($request->new_password)]);
 
-        return $this->sendResponse(true, 'Senha atualizada com sucesso');
+        return $this->sendResponse($data, 'Senha atualizada com sucesso');
 
     }
 }
