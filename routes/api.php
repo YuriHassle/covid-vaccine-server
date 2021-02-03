@@ -40,3 +40,4 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware('auth:api')->put('/users/updatepassword',[AuthController::class, 'updatePassword']);
+Route::middleware('auth:api')->put('/users/updateuserdata',[AuthController::class, 'update']);

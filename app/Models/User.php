@@ -46,19 +46,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $rules = [
-        'password' => 'required',
-        'new_password' => 'required|different:password|same:new_confirm_password',
-        'new_confirm_password' => 'required'
-    ];
+    protected $rules = [];
 
     protected $attributesName = [
+        'email'=>'Email',
         'password' => 'Senha',
         'new_password' => 'Nova senha',
         'new_confirm_password' => 'Confirmar Nova Senha',
     ];
 
     public function validateUpdatePass($data){
+
+        $this->rules = [
+            'password' => 'required',
+            'new_password' => 'required|different:password|same:new_confirm_password',
+            'new_confirm_password' => 'required'
+        ];
 
         $validator = Validator::make($data, $this->rules, $this->attributes, $this->attributesName);
 
@@ -67,6 +70,23 @@ class User extends Authenticatable
                 $validator->errors()->add('password', 'Senha inválida');
             }
         });
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $message) {
+                array_push($this->errors, $message);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public function validateUpdate($data){
+
+        $this->rules = [
+            'email' => 'required|email',
+        ];
+
+        $validator = Validator::make($data, $this->rules);
+
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $message) {
                 array_push($this->errors, $message);
