@@ -66,4 +66,21 @@ class AuthController extends BaseController
         return $this->sendResponse($errors, 'Senha atualizada com sucesso');
 
     }
+
+    public function update(Request $request)
+    {
+        $this->user = User::find(auth()->user()->id);
+
+        $errors = ['errors'=>[]];
+
+        if (!$this->user->validateUpdate($request->all())) {
+            $errors['errors'] = $this->user->errors;
+            return $this->sendResponse($errors, 'Dados inválidos');
+        }
+
+        $this->user->update(['email'=> $request->email]);
+
+        return $this->sendResponse($errors, 'Email atualizado com sucesso');
+
+    }
 }
