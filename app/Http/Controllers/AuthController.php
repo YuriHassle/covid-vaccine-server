@@ -80,7 +80,7 @@ class AuthController extends BaseController
 
         $this->user->update(['email'=> $request->email]);
 
-        return $this->sendResponse($errors, 'Senha atualizada com sucesso');
+        return $this->sendResponse($errors, 'Email atualizado com sucesso');
 
     }
 }
