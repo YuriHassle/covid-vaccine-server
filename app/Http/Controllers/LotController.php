@@ -15,7 +15,7 @@ class LotController extends BaseController
      */
     public function index()
     {
-        $lots = Lot::orderBy('name')->get();
+        $lots = Lot::orderBy('name')->with('immunobiological')->get();
         return $this->sendResponse($lots, 'Lotes recuperadas com sucesso.');
     }
 

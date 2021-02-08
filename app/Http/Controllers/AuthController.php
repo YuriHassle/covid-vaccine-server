@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
-
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends BaseController
 {
+    private $user;
+
     public function register(Request $request)
     {
         $validatedData = $request->validate([
@@ -45,7 +46,41 @@ class AuthController extends BaseController
             'user' =>  auth()->user(),
             'access_token' => auth()->user()->createToken('authToken')->accessToken,
         ];
-        
+
         return $this->sendResponse($responseData, 'Login realizado com sucesso');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $this->user = User::find(auth()->user()->id);
+
+        $errors = ['errors'=>[]];
+
+        if (!$this->user->validateUpdatePass($request->all())) {
+            $errors['errors'] = $this->user->errors;
+            return $this->sendResponse($errors, 'Dados inválidos');
+        }
+
+        $this->user->update(['password'=> Hash::make($request->new_password)]);
+
+        return $this->sendResponse($errors, 'Senha atualizada com sucesso');
+
+    }
+
+    public function update(Request $request)
+    {
+        $this->user = User::find(auth()->user()->id);
+
+        $errors = ['errors'=>[]];
+
+        if (!$this->user->validateUpdate($request->all())) {
+            $errors['errors'] = $this->user->errors;
+            return $this->sendResponse($errors, 'Dados inválidos');
+        }
+
+        $this->user->update(['email'=> $request->email]);
+
+        return $this->sendResponse($errors, 'Email atualizado com sucesso');
+
     }
 }

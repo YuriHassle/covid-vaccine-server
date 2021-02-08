@@ -15,14 +15,23 @@ class ApplicationController extends BaseController
     public function index(Request $request)
     {
         $applications = Application::query();
-        
+
         if($request->filled('cpf')){
             $applications->whereHas('citizen', function($query) use ($request){
                 $query->where('cpf', 'like', $request->cpf);
             });
         }
+        if($request->filled('dose')){
+            $applications->where('dose', $request->dose);
+        }
+        if($request->filled('application_date')){
+            $applications->where('application_date', $request->application_date);
+        }
+        if($request->filled('user_id')){
+            $applications->where('user_id', $request->user_id);
+        }
 
-        $applications = $applications->orderBy('application_date')->with('citizen')->get();
+        $applications = $applications->orderBy('record_date', 'desc')->with('citizen')->get();
 
         return $this->sendResponse($applications, 'Aplicações de vacina recuperadas com sucesso.');
     }
@@ -32,7 +41,7 @@ class ApplicationController extends BaseController
         $citizen = $request->only(['citizen'])['citizen'];
         $application = $request->except(['citizen', 'updated_by']);
 
-        $findCitizen = Citizen::where('cpf', $citizen['cpf'])->doesnthave('applications')->first();
+        $findCitizen = Citizen::where('cpf', $citizen['cpf'])->first();
         if($findCitizen){
             $citizen = $findCitizen;
         } else {
@@ -42,7 +51,7 @@ class ApplicationController extends BaseController
         $application['citizen_id'] = $citizen->id;
         $application = Application::create($application);
 
-        return $this->sendResponse($application, 'Aplicação de vacina salva com sucesso.', 201); 
+        return $this->sendResponse($application, 'Aplicação de vacina salva com sucesso.', 201);
     }
 
     public function show(Application $application)
@@ -53,7 +62,7 @@ class ApplicationController extends BaseController
     public function update(Request $request, Application $application)
     {
         $newCitizen = $request->only(['citizen'])['citizen'];
-        $newApplication = $request->except(['citizen', 'user_id']); 
+        $newApplication = $request->except(['citizen', 'user_id']);
         $citizen = Citizen::find($application->citizen_id);
         if($citizen->cpf != $newCitizen['cpf']){
             return $this->sendError('Não é possível alterar o CPF');

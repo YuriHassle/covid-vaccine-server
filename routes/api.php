@@ -38,3 +38,6 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('servicegroups', ServicegroupController::class, ['only' => ['index']]);
     Route::resource('applications', ApplicationController::class, ['only' => ['store', 'index', 'update']]);
 });
+
+Route::middleware('auth:api')->put('/users/updatepassword',[AuthController::class, 'updatePassword']);
+Route::middleware('auth:api')->put('/users/updateuserdata',[AuthController::class, 'update']);
